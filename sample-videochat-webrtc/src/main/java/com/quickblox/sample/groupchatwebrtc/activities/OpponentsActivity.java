@@ -182,7 +182,7 @@ public class OpponentsActivity extends BaseActivity {
                 @Override
                 public void onSuccess(ArrayList<QBUser> users, Bundle params) {
                     currentOpponentsList = users;
-                    Log.d(TAG, "mylist currentOpponentsList= " + currentOpponentsList);
+                    Log.d(TAG, "proceedInitUsersList currentOpponentsList= " + currentOpponentsList);
                     currentOpponentsList.remove(sharedPrefsHelper.getQbUser());
                     opponentsAdapter = new OpponentsAdapter(OpponentsActivity.this, currentOpponentsList);
                     opponentsAdapter.setSelectedItemsCountsChangedListener(new OpponentsAdapter.SelectedItemsCountsChangedListener() {
