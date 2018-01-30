@@ -13,6 +13,7 @@ import com.crashlytics.android.Crashlytics;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.messages.services.SubscribeService;
 import com.quickblox.sample.core.utils.SharedPrefsHelper;
 import com.quickblox.sample.core.utils.Toaster;
@@ -27,6 +28,7 @@ import com.quickblox.sample.groupchatwebrtc.utils.PermissionsChecker;
 import com.quickblox.sample.groupchatwebrtc.utils.PushNotificationSender;
 import com.quickblox.sample.groupchatwebrtc.utils.UsersUtils;
 import com.quickblox.sample.groupchatwebrtc.utils.WebRtcSessionManager;
+import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCClient;
 import com.quickblox.videochat.webrtc.QBRTCSession;
@@ -168,17 +170,50 @@ public class OpponentsActivity extends BaseActivity {
 
     private void proceedInitUsersList() {
         currentOpponentsList = dbManager.getAllUsers();
-        Log.d(TAG, "proceedInitUsersList currentOpponentsList= " + currentOpponentsList);
-        currentOpponentsList.remove(sharedPrefsHelper.getQbUser());
-        opponentsAdapter = new OpponentsAdapter(this, currentOpponentsList);
-        opponentsAdapter.setSelectedItemsCountsChangedListener(new OpponentsAdapter.SelectedItemsCountsChangedListener() {
-            @Override
-            public void onCountSelectedItemsChanged(int count) {
-                updateActionBar(count);
-            }
-        });
 
-        opponentsListView.setAdapter(opponentsAdapter);
+        if (!(sharedPrefsHelper.getQbUser().getFullName().equals("reception"))) {
+            Log.d("Creation", "POS5");
+            QBPagedRequestBuilder pagedRequestBuilder = new QBPagedRequestBuilder();
+            pagedRequestBuilder.setPage(1);
+            pagedRequestBuilder.setPerPage(50);
+
+
+            QBUsers.getUsersByFullName("reception", pagedRequestBuilder).performAsync(new QBEntityCallback<ArrayList<QBUser>>() {
+                @Override
+                public void onSuccess(ArrayList<QBUser> users, Bundle params) {
+                    currentOpponentsList = users;
+                    Log.d(TAG, "mylist currentOpponentsList= " + currentOpponentsList);
+                    currentOpponentsList.remove(sharedPrefsHelper.getQbUser());
+                    opponentsAdapter = new OpponentsAdapter(OpponentsActivity.this, currentOpponentsList);
+                    opponentsAdapter.setSelectedItemsCountsChangedListener(new OpponentsAdapter.SelectedItemsCountsChangedListener() {
+                        @Override
+                        public void onCountSelectedItemsChanged(int count) {
+                            updateActionBar(count);
+                        }
+                    });
+
+                    opponentsListView.setAdapter(opponentsAdapter);
+                }
+
+                @Override
+                public void onError(QBResponseException errors) {
+                    Log.d("Creation", "POS1");
+                }
+            });
+        }
+        else {
+            Log.d(TAG, "proceedInitUsersList currentOpponentsList= " + currentOpponentsList);
+            currentOpponentsList.remove(sharedPrefsHelper.getQbUser());
+            opponentsAdapter = new OpponentsAdapter(this, currentOpponentsList);
+            opponentsAdapter.setSelectedItemsCountsChangedListener(new OpponentsAdapter.SelectedItemsCountsChangedListener() {
+                @Override
+                public void onCountSelectedItemsChanged(int count) {
+                    updateActionBar(count);
+                }
+            });
+
+            opponentsListView.setAdapter(opponentsAdapter);
+        }
     }
 
     @Override
