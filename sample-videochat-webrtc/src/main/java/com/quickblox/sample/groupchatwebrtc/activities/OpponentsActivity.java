@@ -262,6 +262,15 @@ public class OpponentsActivity extends BaseActivity {
                 }
                 return true;
 
+            case R.id.open_conversation:
+                if (isLoggedInChat()) {
+                    startCall(false);
+                }
+                if (checker.lacksPermissions(Consts.PERMISSIONS[1])) {
+                    startPermissionsActivity(true);
+                }
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

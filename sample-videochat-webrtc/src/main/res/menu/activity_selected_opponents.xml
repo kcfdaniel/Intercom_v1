@@ -3,18 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <item
+    <!-- <item
         android:id="@+id/start_video_call"
         android:title="@string/action_start_video_call"
         android:icon="@drawable/ic_videocam"
         app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        tools:ignore="AlwaysShowAction" /> -->
 
-    <item
+    <!-- <item
         android:id="@+id/start_audio_call"
         android:title="@string/action_start_video_call"
         android:icon="@drawable/ic_call_grey"
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" /> -->
+
+    <item
+        android:id="@+id/open_conversation"
+        android:title="@string/action_open_conversation"
+        android:icon="@drawable/ic_call_grey"
+        app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
+
+    
 
 </menu>

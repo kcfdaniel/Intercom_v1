@@ -46,6 +46,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_start_video_call">Video call</string>
     <string name="action_start_audio_call">Audio call</string>
+    <string name="action_open_conversation">Conversation</string>
 
 
     <!--action bar-->
